@@ -1,6 +1,8 @@
 import java.util.*;
 import java.io.*;
 
+import static java.lang.Math.min;
+
 public class ConcatenateMatrices {
 
     private static void concatenate(StringBuilder[][] to, String[][] from, int nRows, int nColumns){
@@ -11,16 +13,29 @@ public class ConcatenateMatrices {
         }
     }
 
+    private static void loadMatrix(String[][] input, Scanner scanner, int nRows, int nColumns){
+        for (int i = 0; i < nRows; i++) {
+            for (int j = 0; j < nColumns; j++) {
+                if (!scanner.hasNext()){
+                    throw new IllegalArgumentException("Invalid matrix inputted");
+                } else {
+                    input[i][j] = scanner.next();
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(new File("vstup.txt"));
         PrintStream output = new PrintStream("vystup.txt");
         int m = scanner.nextInt();
         int n = scanner.nextInt();
 
-        StringBuilder[][] result = new StringBuilder[m][];
-        for (int k = 0; k < m; k++) {
-            result[k] = new StringBuilder[n];
+        if (min(m,n) < 0){
+            throw new IllegalArgumentException("Illegal matrix size");
         }
+
+        StringBuilder[][] result = new StringBuilder[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 result[i][j] = new StringBuilder();
@@ -28,11 +43,7 @@ public class ConcatenateMatrices {
         }
         while (scanner.hasNext()) {
             String[][] input = new String[m][n];
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    input[i][j] = scanner.next();
-                }
-            }
+            loadMatrix(input, scanner, m, n);
             concatenate(result, input, m, n);
         }
         scanner.close();
