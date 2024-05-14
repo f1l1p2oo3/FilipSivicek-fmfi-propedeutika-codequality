@@ -5,6 +5,16 @@ import static java.lang.Math.min;
 
 public class ConcatenateMatrices {
 
+    private static StringBuilder[][] transpose(StringBuilder[][] matrix, int nRows, int nColumns){
+        StringBuilder[][] helper = new StringBuilder[nColumns][nRows];
+        for (int i = 0; i < nColumns; i++) {
+            for (int j = 0; j < nRows; j++) {
+                helper[i][j] = matrix[j][i];
+            }
+        }
+        return helper;
+    }
+
     private static void concatenate(StringBuilder[][] to, String[][] from, int nRows, int nColumns){
         for (int i = 0; i < nRows; i++) {
             for (int j = 0; j < nColumns; j++) {
@@ -21,6 +31,14 @@ public class ConcatenateMatrices {
                 } else {
                     input[i][j] = scanner.next();
                 }
+            }
+        }
+    }
+
+    private static void outputMatrix(StringBuilder[][] outputMatrix, PrintStream output, int nRows, int nColumns){
+        for (int i = 0; i < nRows; i++) {
+            for (int j = 0; j < nColumns; j++) {
+                output.printf("[%d,%d]: %s\n", i, j, outputMatrix[i][j]);
             }
         }
     }
@@ -47,11 +65,7 @@ public class ConcatenateMatrices {
             concatenate(result, input, m, n);
         }
         scanner.close();
-        for (int i = 0; i < m; i++) { //formatovany vystup vyslednej matice
-            for (int j = 0; j < n; j++) {
-                output.printf("[%d,%d]: %s\n", i, j, result[i][j]);
-            }
-        }
+        outputMatrix(result, output, m, n);
         output.close();
     }
 }
